@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --radius: 1rem;
+    
+    /* Fallbacks for older browsers */
+    --accent: #e2e2e2;
+    --destructive-foreground: #fbfbfb;
+    
+    /* OKLCH values */
+    @supports (color: oklch(0% 0 0)) {
+      --accent: oklch(0.89 0 0);
+      --destructive-foreground: oklch(0.985 0 0);
+    }
+  }
+
+  .dark {
+    --background: #202020;
+    --accent: #3b3b3b;
+    --destructive-foreground: #fbfbfb;
+
+    @supports (color: oklch(0% 0 0)) {
+      --background: oklch(0.125 0 0);
+      --accent: oklch(0.229 0 0);
+      --destructive-foreground: oklch(0.985 0 0);
+    }
+  }
+
+  body {
+    @apply font-body bg-void text-text-primary antialiased;
+    background-image: radial-gradient(circle at 50% -20%, #1A1D1C 0%, #080909 100%);
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-gold;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+@layer components {
+  .grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .premium-blur {
+    @apply backdrop-blur-md bg-ink/70 border border-white/5;
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #D4AF37 0%, #A67C00 100%);
+  }
+
+  .text-gold-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #D4AF37 0%, #E5C35D 100%);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-void;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+}
+
+/* Markdown Styles */
+.prose {
+  @apply text-text-primary leading-relaxed text-left;
+}
+
+.prose p {
+  @apply mb-4;
+}
+
+.prose strong {
+  @apply text-gold font-semibold;
+}
+
+.prose code {
+  @apply font-mono bg-white/5 px-1 rounded text-sm text-gold-light;
+}
+
+/* Utility to hide horizontal scroll on main components if needed */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gold/10 rounded-full;
+}
