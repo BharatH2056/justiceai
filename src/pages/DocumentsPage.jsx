@@ -1,8 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileWarning, ShoppingBag, FileSearch, Shield, ArrowLeft, ArrowRight, Copy, Download, Check, X, ChevronRight } from 'lucide-react';
+import {
+  FileWarning,
+  ShoppingBag,
+  FileSearch,
+  Shield,
+  ArrowLeft,
+  ArrowRight,
+  Copy,
+  Download,
+  Check,
+  X,
+  ChevronRight,
+} from 'lucide-react';
 import Header from '../components/ui/Header';
 import { DOCUMENT_TEMPLATES } from '../lib/documentTemplates';
+import jsPDF from 'jspdf';
 
 const ICONS = { FileWarning, ShoppingBag, FileSearch, Shield };
 
@@ -16,19 +29,21 @@ function TemplateCard({ template, onSelect, index }) {
       onClick={() => onSelect(template)}
       className="group relative cursor-pointer"
     >
-      <div className="h-full p-8 rounded-[32px] premium-blur border border-white/5 hover:border-gold/30 transition-all duration-500 overflow-hidden flex flex-col">
-        <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-gold/5 blur-3xl group-hover:bg-gold/10 transition-all" />
-        
-        <div className="w-14 h-14 rounded-[20px] bg-raised border border-white/10 flex items-center justify-center mb-6 group-hover:border-gold/40 group-hover:scale-110 transition-all duration-500">
-          <Icon className="w-7 h-7 text-gold-light" />
+      <div className="h-full p-8 rounded-[32px] premium-blur border border-white/5 hover:border-purple/30 transition-all duration-500 overflow-hidden flex flex-col">
+        <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-purple/5 blur-3xl group-hover:bg-purple/10 transition-all" />
+
+        <div className="w-14 h-14 rounded-[20px] bg-raised border border-white/10 flex items-center justify-center mb-6 group-hover:border-purple/40 group-hover:scale-110 transition-all duration-500">
+          <Icon className="w-7 h-7 text-purple-light" />
         </div>
 
-        <h3 className="text-2xl font-display text-white mb-3 group-hover:text-gold transition-colors">{template.title}</h3>
+        <h3 className="text-2xl font-display text-white mb-3 group-hover:text-purple transition-colors">
+          {template.title}
+        </h3>
         <p className="text-sm text-text-secondary leading-relaxed font-body mb-8 flex-1">
           {template.description}
         </p>
 
-        <div className="flex items-center justify-between gap-3 bg-white/5 group-hover:bg-gold text-white group-hover:text-ink px-6 py-4 rounded-2xl font-bold transition-all">
+        <div className="flex items-center justify-between gap-3 bg-white/5 group-hover:bg-purple text-white group-hover:text-ink px-6 py-4 rounded-2xl font-bold transition-all">
           <span className="text-xs uppercase tracking-widest">Generate</span>
           <ChevronRight className="w-4 h-4" />
         </div>
@@ -42,19 +57,22 @@ function FormWizard({ template, onBack, onGenerate }) {
   const [currentStep, setCurrentStep] = useState(0);
   const fieldsPerStep = 3;
   const totalSteps = Math.ceil(template.fields.length / fieldsPerStep);
-  const stepFields = template.fields.slice(currentStep * fieldsPerStep, (currentStep + 1) * fieldsPerStep);
+  const stepFields = template.fields.slice(
+    currentStep * fieldsPerStep,
+    (currentStep + 1) * fieldsPerStep,
+  );
 
   const handleChange = (fieldId, value) => {
-    setFormData(prev => ({ ...prev, [fieldId]: value }));
+    setFormData((prev) => ({ ...prev, [fieldId]: value }));
   };
 
   const isStepValid = () => {
-    return stepFields.filter(f => f.required).every(f => formData[f.id]?.toString().trim());
+    return stepFields.filter((f) => f.required).every((f) => formData[f.id]?.toString().trim());
   };
 
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     } else {
       onGenerate(formData);
     }
@@ -69,7 +87,10 @@ function FormWizard({ template, onBack, onGenerate }) {
     >
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <button onClick={onBack} className="p-2 rounded-xl bg-raised border border-white/10 hover:border-gold/30 transition-colors">
+        <button
+          onClick={onBack}
+          className="p-2 rounded-xl bg-raised border border-white/10 hover:border-purple/30 transition-colors"
+        >
           <ArrowLeft className="w-5 h-5 text-text-secondary" />
         </button>
         <div>
@@ -83,7 +104,7 @@ function FormWizard({ template, onBack, onGenerate }) {
         {Array.from({ length: totalSteps }).map((_, i) => (
           <div key={i} className="flex-1 h-1.5 rounded-full overflow-hidden bg-white/5">
             <motion.div
-              className="h-full gold-gradient"
+              className="h-full purple-gradient"
               initial={{ width: 0 }}
               animate={{ width: i <= currentStep ? '100%' : '0%' }}
               transition={{ duration: 0.4 }}
@@ -101,7 +122,7 @@ function FormWizard({ template, onBack, onGenerate }) {
           exit={{ opacity: 0, y: -16 }}
           className="space-y-6"
         >
-          {stepFields.map(field => (
+          {stepFields.map((field) => (
             <div key={field.id} className="space-y-2">
               <label className="flex items-center gap-2 text-[11px] uppercase font-bold tracking-[0.15em] text-text-secondary">
                 {field.label}
@@ -113,16 +134,18 @@ function FormWizard({ template, onBack, onGenerate }) {
                   onChange={(e) => handleChange(field.id, e.target.value)}
                   placeholder={field.placeholder || ''}
                   rows={4}
-                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-gold/40 transition-colors font-body resize-none"
+                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-purple/40 transition-colors font-body resize-none"
                 />
               ) : field.type === 'select' ? (
                 <select
                   value={formData[field.id] || field.options?.[0] || ''}
                   onChange={(e) => handleChange(field.id, e.target.value)}
-                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary focus:outline-none focus:border-gold/40 transition-colors font-body"
+                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary focus:outline-none focus:border-purple/40 transition-colors font-body"
                 >
-                  {field.options?.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
+                  {field.options?.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
                   ))}
                 </select>
               ) : (
@@ -131,7 +154,7 @@ function FormWizard({ template, onBack, onGenerate }) {
                   value={formData[field.id] || ''}
                   onChange={(e) => handleChange(field.id, e.target.value)}
                   placeholder={field.placeholder || ''}
-                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-gold/40 transition-colors font-body"
+                  className="w-full bg-ink border border-white/10 rounded-2xl px-5 py-4 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-purple/40 transition-colors font-body"
                 />
               )}
             </div>
@@ -142,7 +165,7 @@ function FormWizard({ template, onBack, onGenerate }) {
       {/* Navigation */}
       <div className="flex items-center justify-between mt-10 pt-8 border-t border-white/5">
         <button
-          onClick={() => currentStep > 0 ? setCurrentStep(prev => prev - 1) : onBack()}
+          onClick={() => (currentStep > 0 ? setCurrentStep((prev) => prev - 1) : onBack())}
           className="flex items-center gap-2 text-sm text-text-secondary hover:text-white transition-colors font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -156,7 +179,7 @@ function FormWizard({ template, onBack, onGenerate }) {
         <button
           onClick={handleNext}
           disabled={!isStepValid()}
-          className="flex items-center gap-2 bg-gold hover:bg-gold-light disabled:opacity-30 disabled:cursor-not-allowed text-ink px-6 py-3 rounded-2xl font-bold transition-all active:scale-95"
+          className="flex items-center gap-2 bg-purple hover:bg-purple-light disabled:opacity-30 disabled:cursor-not-allowed text-ink px-6 py-3 rounded-2xl font-bold transition-all active:scale-95"
         >
           <span>{currentStep < totalSteps - 1 ? 'Next' : 'Generate Document'}</span>
           <ArrowRight className="w-4 h-4" />
@@ -189,13 +212,89 @@ function DocumentPreview({ document, template, onBack }) {
   };
 
   const handleDownload = () => {
-    const blob = new Blob([document], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = window.document.createElement('a');
-    a.href = url;
-    a.download = `${template.id}-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const doc = new jsPDF();
+
+    // 1. Typography must look like a legal document
+    doc.setFont('times', 'normal');
+
+    const pageHeight = doc.internal.pageSize.height;
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 20;
+    const maxWidth = pageWidth - margin * 2;
+
+    // 2. Add a header and footer to every page
+    const addHeaderFooter = (pageNum) => {
+      // Header
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text(
+        'Generated by JusticeAI \u2014 For Reference Purposes Only',
+        pageWidth - margin,
+        15,
+        { align: 'right' },
+      );
+
+      // Footer
+      doc.text(
+        `Page ${pageNum}  |  Generated on: ${new Date().toLocaleDateString()}`,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' },
+      );
+    };
+
+    let cursorY = margin + 10;
+    let pageNum = 1;
+
+    addHeaderFooter(pageNum);
+
+    // Body Setup
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+
+    // Auto-paginating text splitting
+    const lines = doc.splitTextToSize(document, maxWidth);
+
+    lines.forEach((line) => {
+      if (cursorY > pageHeight - margin - 20) {
+        doc.addPage();
+        pageNum++;
+        addHeaderFooter(pageNum);
+        doc.setFontSize(12);
+        doc.setTextColor(0);
+        doc.setFont('times', 'normal');
+        cursorY = margin + 10;
+      }
+      doc.text(line, margin, cursorY);
+      cursorY += 6;
+    });
+
+    // 3. Add the disclaimer as the last line of every document
+    cursorY += 10;
+    if (cursorY > pageHeight - margin - 20) {
+      doc.addPage();
+      pageNum++;
+      addHeaderFooter(pageNum);
+      cursorY = margin + 10;
+    }
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.setFont('times', 'italic');
+    const disclaimer =
+      'This document is a template generated for informational purposes. It has not been reviewed by a licensed advocate. Do not submit to any court or authority without professional legal review.';
+    const disclaimerLines = doc.splitTextToSize(disclaimer, maxWidth);
+
+    disclaimerLines.forEach((line) => {
+      doc.text(line, margin, cursorY);
+      cursorY += 5;
+    });
+
+    // 4. Filename should be descriptive
+    const dateStr = new Date().toISOString().split('T')[0];
+    const filename = `JusticeAI_${template.title.replace(/\\s+/g, '')}_${dateStr}.pdf`;
+
+    doc.save(filename);
   };
 
   return (
@@ -207,7 +306,10 @@ function DocumentPreview({ document, template, onBack }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <button onClick={onBack} className="p-2 rounded-xl bg-raised border border-white/10 hover:border-gold/30 transition-colors">
+          <button
+            onClick={onBack}
+            className="p-2 rounded-xl bg-raised border border-white/10 hover:border-purple/30 transition-colors"
+          >
             <ArrowLeft className="w-5 h-5 text-text-secondary" />
           </button>
           <div>
@@ -221,14 +323,18 @@ function DocumentPreview({ document, template, onBack }) {
         <div className="flex items-center gap-3">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 bg-raised border border-white/10 hover:border-gold/30 text-text-secondary hover:text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+            className="flex items-center gap-2 bg-raised border border-white/10 hover:border-purple/30 text-text-secondary hover:text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
           >
-            {copied ? <Check className="w-4 h-4 text-accent-success" /> : <Copy className="w-4 h-4" />}
+            {copied ? (
+              <Check className="w-4 h-4 text-accent-success" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
             <span>{copied ? 'Copied!' : 'Copy'}</span>
           </button>
           <button
             onClick={handleDownload}
-            className="flex items-center gap-2 bg-gold hover:bg-gold-light text-ink px-5 py-2.5 rounded-xl font-bold transition-all active:scale-95"
+            className="flex items-center gap-2 bg-purple hover:bg-purple-light text-ink px-5 py-2.5 rounded-xl font-bold transition-all active:scale-95"
           >
             <Download className="w-4 h-4" />
             <span>Download</span>
@@ -242,7 +348,9 @@ function DocumentPreview({ document, template, onBack }) {
           <div className="w-3 h-3 rounded-full bg-accent-error/60" />
           <div className="w-3 h-3 rounded-full bg-accent-warning/60" />
           <div className="w-3 h-3 rounded-full bg-accent-success/60" />
-          <span className="ml-4 text-[10px] text-text-tertiary uppercase tracking-widest font-bold">Document Preview</span>
+          <span className="ml-4 text-[10px] text-text-tertiary uppercase tracking-widest font-bold">
+            Document Preview
+          </span>
         </div>
         <pre
           ref={previewRef}
@@ -255,9 +363,9 @@ function DocumentPreview({ document, template, onBack }) {
       {/* Action Footer */}
       <div className="mt-8 p-6 bg-accent-warning/5 border border-accent-warning/10 rounded-2xl">
         <p className="text-xs text-accent-warning leading-relaxed font-body">
-          <strong>⚠️ Important:</strong> This document is auto-generated for informational purposes only. 
-          Please have it reviewed by a qualified advocate before using it in any official capacity. 
-          Laws and procedures may vary by jurisdiction.
+          <strong>⚠️ Important:</strong> This document is auto-generated for informational purposes
+          only. Please have it reviewed by a qualified advocate before using it in any official
+          capacity. Laws and procedures may vary by jurisdiction.
         </p>
       </div>
     </motion.div>
@@ -289,43 +397,72 @@ export default function DocumentsPage() {
   return (
     <div className="min-h-screen bg-void pb-32">
       <Header />
-      
+
       <main className="max-w-6xl mx-auto px-6 pt-32 space-y-16">
         <AnimatePresence mode="wait">
           {stage === 'select' && (
-            <motion.div key="select" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div
+              key="select"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
               {/* Page Header */}
               <div className="text-center space-y-4 mb-16">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 text-gold-light text-[10px] uppercase font-bold tracking-[0.2em] rounded-full border border-gold/20">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple/10 text-purple-light text-[10px] uppercase font-bold tracking-[0.2em] rounded-full border border-purple/20">
                   <FileWarning className="w-3.5 h-3.5" />
                   <span>Document Generator</span>
                 </div>
                 <h1 className="text-5xl md:text-6xl font-display font-semibold">
-                  Generate Legal <span className="text-gold-gradient">Documents</span>
+                  Generate Legal <span className="text-purple-gradient">Documents</span>
                 </h1>
                 <p className="text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto font-body">
-                  Create ready-to-use legal documents by filling in simple forms. Choose a template to get started.
+                  Create ready-to-use legal documents by filling in simple forms. Choose a template
+                  to get started.
                 </p>
               </div>
 
               {/* Template Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {DOCUMENT_TEMPLATES.map((template, i) => (
-                  <TemplateCard key={template.id} template={template} onSelect={handleSelect} index={i} />
+                  <TemplateCard
+                    key={template.id}
+                    template={template}
+                    onSelect={handleSelect}
+                    index={i}
+                  />
                 ))}
               </div>
             </motion.div>
           )}
 
           {stage === 'form' && selectedTemplate && (
-            <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <FormWizard template={selectedTemplate} onBack={handleReset} onGenerate={handleGenerate} />
+            <motion.div
+              key="form"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <FormWizard
+                template={selectedTemplate}
+                onBack={handleReset}
+                onGenerate={handleGenerate}
+              />
             </motion.div>
           )}
 
           {stage === 'preview' && generatedDoc && (
-            <motion.div key="preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <DocumentPreview document={generatedDoc} template={selectedTemplate} onBack={handleReset} />
+            <motion.div
+              key="preview"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <DocumentPreview
+                document={generatedDoc}
+                template={selectedTemplate}
+                onBack={handleReset}
+              />
             </motion.div>
           )}
         </AnimatePresence>

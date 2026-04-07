@@ -1,43 +1,50 @@
 import { SYSTEM_PROMPT } from './systemPrompt';
 
-const OLLAMA_URL = 'http://localhost:11434/api/chat';
-const MODEL = 'qwen2.5-coder:7b'; // Hardcoded local model from Ollama
+// Route requests to our local Node.js RAG backend instead of raw Ollama
+const RAG_BACKEND_URL = 'http://localhost:3001/api/chat';
 
 export async function sendMessage(conversationHistory, userMessage, options = {}) {
-  const { judgePersonality = 'Neutral', mode = 'copilot' } = options;
+  const { judgePersonality = 'Neutral', mode = 'copilot', jurisdiction = 'National' } = options;
 
-  // Inject current mode and judge personality context into the system instructions if needed
-  const modeContext = mode === 'simulator' 
-    ? "MODE: Opposing Counsel Simulator. Adopt an adversarial, formal, and aggressive tone."
-    : "MODE: Legal Co-pilot. Be empathic and strategic.";
-  
-  const personalityContext = `JUDGE PERSONALITY: ${judgePersonality}. Adjust your confidence and tone based on this temperament.`;
+  try {
+    const response = await fetch(RAG_BACKEND_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          ...conversationHistory.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
+        personality: judgePersonality,
+        mode: mode,
+        jurisdiction: jurisdiction,
+        basePrompt: SYSTEM_PROMPT,
+        provider: localStorage.getItem('justice_ai_provider') || 'ollama',
+        apiKeys: JSON.parse(localStorage.getItem('justice_ai_keys') || '{}')
+      }),
+    });
 
-  // Prepend the system prompt as the first message role
-  const formattedMessages = [
-    { role: 'system', content: `${SYSTEM_PROMPT}\n\nCURRENT CONTEXT:\n${modeContext}\n${personalityContext}` },
-    ...conversationHistory.map(m => ({
-      role: m.role,
-      content: m.content
-    }))
-  ];
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Backend returned ${response.status}: ${errorText}`);
+    }
 
-  const response = await fetch(OLLAMA_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: formattedMessages,
-      stream: false,
-    })
-  });
+    const data = await response.json();
+    return data.message.content;
+  } catch (error) {
+    console.error('❌ Backend connection failed:', error.message);
 
-  if (!response.ok) {
-    throw new Error('Failed to connect to local Ollama API');
+    // Re-throw the error so the UI can display it properly
+    // instead of silently returning a fake response
+    throw new Error(
+      `Could not reach the JusticeAI backend. Please ensure:\n` +
+        `1. Ollama is running (ollama serve)\n` +
+        `2. The backend server is running (node server.js)\n` +
+        `\nTechnical details: ${error.message}`,
+    );
   }
-
-  const data = await response.json();
-  return data.message.content;
 }

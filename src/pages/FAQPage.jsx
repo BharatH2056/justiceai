@@ -5,55 +5,69 @@ import Header from '../components/ui/Header';
 
 const FAQ_DATA = [
   {
-    question: "Is JusticeAI a substitute for a real lawyer?",
-    answer: "No. JusticeAI is an AI-powered legal co-pilot designed to provide legal information. You should always consult with a qualified advocate for real legal advice and court representation."
+    question: 'Is JusticeAI a substitute for a real lawyer?',
+    answer:
+      'No. JusticeAI is an AI-powered legal co-pilot designed to provide legal information. You should always consult with a qualified advocate for real legal advice and court representation.',
   },
   {
-    question: "Which Indian laws does the AI understand?",
-    answer: "JusticeAI has been trained on a broad range of Indian statutes, including the Indian Penal Code (IPC/BNS), Code of Civil Procedure (CPC), Consumer Protection Act, RTI Act, and specific Real Estate (RERA) and Labor laws. It also understands the latest Constitutional Amendments (up to 2024)."
+    question: 'Which Indian laws does the AI understand?',
+    answer:
+      'JusticeAI has been trained on a broad range of Indian statutes, including the Indian Penal Code (IPC/BNS), Code of Civil Procedure (CPC), Consumer Protection Act, RTI Act, and specific Real Estate (RERA) and Labor laws. It also understands the latest Constitutional Amendments (up to 2024).',
   },
   {
-    question: "Does JusticeAI understand the Constitution?",
-    answer: "Yes. JusticeAI integrates the Constitution of India (updated as of May 2024) as its primary legal framework. It can identify violations of Fundamental Rights (like Art. 21) and suggest Constitutional remedies like Writ Petitions under Art. 32 or Art. 226."
+    question: 'Does JusticeAI understand the Constitution?',
+    answer:
+      'Yes. JusticeAI integrates the Constitution of India (updated as of May 2024) as its primary legal framework. It can identify violations of Fundamental Rights (like Art. 21) and suggest Constitutional remedies like Writ Petitions under Art. 32 or Art. 226.',
   },
   {
-    question: "How accurate are the win/loss predictions?",
-    answer: "The 'Verdict Prediction' is a statistical estimate based on the factors provided. It is not a guarantee of a court outcome. Legal proceedings are complex and depend on many external variables."
+    question: 'How accurate are the win/loss predictions?',
+    answer:
+      "The 'Verdict Prediction' is a statistical estimate based on the factors provided. It is not a guarantee of a court outcome. Legal proceedings are complex and depend on many external variables.",
   },
   {
-    question: "Can I use the generated summary in court?",
-    answer: "The 'Legal Summary' is intended to help you organize your thoughts and prepare for your first meeting with a lawyer. It is not a formal legal pleading and should be reviewed by an advocate before being submitted to any authority."
+    question: 'Can I use the generated summary in court?',
+    answer:
+      "The 'Legal Summary' is intended to help you organize your thoughts and prepare for your first meeting with a lawyer. It is not a formal legal pleading and should be reviewed by an advocate before being submitted to any authority.",
   },
   {
-    question: "Does JusticeAI store my private case details?",
-    answer: "Your case data is stored locally in your browser's localStorage for your convenience. We do not store sensitive legal documents on our central servers in this hackathon version."
+    question: 'Does JusticeAI store my private case details?',
+    answer:
+      "Your case data is stored locally in your browser's localStorage for your convenience. We do not store sensitive legal documents on our central servers.",
   },
   {
-    question: "Is this tool free to use?",
-    answer: "Yes, currently JusticeAI is free for everyone as part of our mission to improve legal access in India."
+    question: 'Is this tool free to use?',
+    answer:
+      'Yes, currently JusticeAI is free for everyone as part of our mission to improve legal access in India.',
   },
   {
-    question: "Can I handle a criminal case using JusticeAI?",
-    answer: "JusticeAI can provide information on criminal procedure and your rights, but criminal cases carry high risks (imprisonment). We strongly recommend immediate legal counsel for any criminal matter."
+    question: 'Can I handle a criminal case using JusticeAI?',
+    answer:
+      'JusticeAI can provide information on criminal procedure and your rights, but criminal cases carry high risks (imprisonment). We strongly recommend immediate legal counsel for any criminal matter.',
   },
   {
-    question: "How do I start a new case from scratch?",
-    answer: "You can click the 'New Case' button in the chat workspace or navigate to the 'Samples' page to pre-load common legal scenarios."
-  }
+    question: 'How do I start a new case from scratch?',
+    answer:
+      "You can click the 'New Case' button in the chat workspace or navigate to the 'Samples' page to pre-load common legal scenarios.",
+  },
 ];
 
 function FAQItem({ question, answer, isOpen, onToggle }) {
   return (
-    <div className="border-b border-white/5 last:border-0 overflow-hidden">
-      <button 
+    <div className="border-b-2 border-white/5 last:border-0 overflow-hidden">
+      <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-8 px-6 text-left hover:bg-white/[0.02] transition-colors group"
+        className="w-full flex items-center justify-between py-10 px-8 text-left hover:bg-red/[0.02] transition-colors group relative"
       >
-        <span className={`text-xl font-display transition-colors ${isOpen ? 'text-gold' : 'text-white group-hover:text-gold-light'}`}>
+        <span
+          className={`text-xl font-display font-bold uppercase tracking-tighter italic transition-colors ${isOpen ? 'text-red' : 'text-white group-hover:text-red-light'}`}
+        >
+          <span className="opacity-20 mr-4 font-mono">//</span>
           {question}
         </span>
-        <div className={`p-2 rounded-full border transition-all ${isOpen ? 'bg-gold border-gold text-ink rotate-0' : 'bg-transparent border-white/10 text-white rotate-90'}`}>
-          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        <div
+          className={`p-3 rounded-sm border-2 transition-all shadow-hard ${isOpen ? 'bg-red border-red text-white rotate-0' : 'bg-void border-white/10 text-white/20 rotate-90'}`}
+        >
+          {isOpen ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
         </div>
       </button>
       <AnimatePresence>
@@ -64,7 +78,7 @@ function FAQItem({ question, answer, isOpen, onToggle }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="px-6 pb-8 text-text-secondary leading-relaxed font-body">
+            <div className="px-20 pb-12 text-[11px] text-text-tertiary leading-loose font-mono uppercase tracking-widest italic opacity-80 border-l-4 border-red/20 ml-8 mb-4">
               {answer}
             </div>
           </motion.div>
@@ -78,24 +92,29 @@ export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <div className="min-h-screen bg-void pb-32">
+    <div className="min-h-screen bg-void pb-32 font-mono">
       <Header />
-      
-      <main className="max-w-4xl mx-auto px-6 pt-32 space-y-16">
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 text-gold-light text-[10px] uppercase font-bold tracking-[0.2em] rounded-full border border-gold/20">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>Support Center</span>
+
+      <main className="max-w-4xl mx-auto px-6 pt-32 space-y-20">
+        <div className="text-center space-y-8">
+          <div className="inline-flex items-center gap-4 px-5 py-2 bg-void text-red text-[11px] uppercase font-extrabold tracking-[0.5em] rounded-sm border-2 border-red/40 shadow-hard-red/10 italic">
+            <HelpCircle className="w-5 h-5" />
+            <span>OPERATIONAL_SUPPORT_REGISTRY</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-display font-semibold">Common <span className="text-gold-gradient">Questions</span></h1>
-          <p className="text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto font-body">
-            Everything you need to know about JusticeAI and how it helps you navigate the Indian legal system.
+          <h1 className="text-6xl md:text-9xl font-display font-bold uppercase tracking-tighter leading-none italic text-white">
+            INTEL <span className="text-red">FAQ</span>
+          </h1>
+          <p className="text-xs text-text-tertiary leading-relaxed max-w-2xl mx-auto uppercase tracking-[0.4em] italic opacity-60">
+            COMPREHENSIVE PROCEDURAL INTELLIGENCE FOR NAVIGATING THE JUSTICEAI CORE_SYSTEM_ARCHITECTURE.
           </p>
         </div>
 
-        <div className="bg-raised rounded-[40px] border border-white/5 overflow-hidden shadow-2xl">
+        <div className="bg-void rounded-sm border-2 border-white/5 overflow-hidden shadow-hard relative">
+          {/* Internal Tactical Accents */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red/[0.02] border-l-2 border-b-2 border-red/[0.05] pointer-events-none" />
+          
           {FAQ_DATA.map((item, i) => (
-            <FAQItem 
+            <FAQItem
               key={i}
               question={item.question}
               answer={item.answer}
@@ -105,16 +124,19 @@ export default function FAQPage() {
           ))}
         </div>
 
-        <div className="text-center p-12 bg-gold/5 rounded-[40px] border border-gold/10 space-y-6">
-          <h2 className="text-2xl font-display text-white italic">Ready to build your strategy?</h2>
+        <div className="text-center p-16 bg-red/[0.03] rounded-sm border-2 border-red/15 space-y-10 shadow-hard relative overflow-hidden group">
+          {/* Diagonal Stripe Background */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#ff0000_10px,#ff0000_11px)]" />
+          
+          <h2 className="text-3xl font-display font-bold text-white italic uppercase tracking-tighter relative z-10">INITIALIZE_LEGAL_STRATEGY?</h2>
           <motion.a
             href="/chat"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-3 bg-gold text-ink px-8 py-4 rounded-2xl font-bold transition-all shadow-lg shadow-gold/20"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-4 bg-red text-white px-10 py-6 rounded-sm font-extrabold transition-all shadow-hard-red uppercase tracking-[0.4em] italic relative z-10 active:translate-y-[2px]"
           >
-            <span>Launch Your Case</span>
-            <ArrowRight className="w-5 h-5" />
+            <span>LAUNCH_COMMAND_CORE</span>
+            <ArrowRight className="w-6 h-6 ml-2" />
           </motion.a>
         </div>
       </main>

@@ -6,74 +6,88 @@ import Header from '../components/ui/Header';
 export default function AboutPage() {
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
   const features = [
     {
       icon: Target,
-      title: "Our Mission",
-      description: "To democratize legal power. Justice shouldn't be reserved for those who can afford expensive retainers."
+      title: 'STRATEGIC_MISSION',
+      description:
+        "TO DEMOCRATIZE LEGAL SOVEREIGNTY. JUSTICE_STREAMS SHOULD NOT BE RESERVED FOR THOSE WHO CAN AFFORD EXPENSIVE RETAINER_PROTOCOLS.",
     },
     {
       icon: Users,
-      title: "For Every Citizen",
-      description: "Designed specifically for the common person navigate complex Indian legal procedures with clarity."
+      title: 'CITIZEN_SOVEREIGNTY',
+      description:
+        'DESIGNED SPECIFICALLY FOR THE COMMON CITIZEN TO NAVIGATE COMPLEX INDIAN LEGAL PROCEDURES WITH HIGH_PRECISION CLARITY.',
     },
     {
       icon: Shield,
-      title: "Constitutional Basis",
-      description: "Our intelligence is grounded in the Constitution of India (updated 2024) and key statutes like IPC, BNS, and Consumer Acts."
-    }
+      title: 'CONSTITUTIONAL_MANDATE',
+      description:
+        'OUR INTELLIGENCE IS GROUNDED IN THE CONSTITUTION OF INDIA (BNS/IPC V2.1) AND KEY STATUTES GOVERNING DOMESTIC SECURITY.',
+    },
   ];
 
   return (
-    <div className="relative min-h-screen bg-void pb-24">
+    <div className="relative min-h-screen bg-void pb-32 font-mono">
       <Header />
-      
+
       <main className="max-w-4xl mx-auto px-6 pt-32 space-y-24">
         {/* Hero Section */}
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center space-y-6"
+          className="text-center space-y-8"
         >
-          <motion.div variants={itemVariants} className="inline-flex p-3 rounded-2xl bg-gold/5 border border-gold/10 mb-4">
-            <Scale className="w-8 h-8 text-gold" />
+          <motion.div
+            variants={itemVariants}
+            className="inline-flex p-5 rounded-sm bg-void border-2 border-red/40 mb-6 shadow-hard-red/10"
+          >
+            <Scale className="w-10 h-10 text-red" />
           </motion.div>
-          <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-display font-semibold">
-            Justice for <span className="text-gold-gradient">Everyone</span>
+          <motion.h1
+            variants={itemVariants}
+            className="text-6xl md:text-8xl font-display font-bold uppercase tracking-tighter italic text-white leading-none"
+          >
+            BUREAU <span className="text-red">OVERVIEW</span>
           </motion.h1>
-          <motion.p variants={itemVariants} className="text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto font-body">
-            JusticeAI was built to bridge the gap between complex legal jargon 
-            and the people who need protection the most.
+          <motion.p
+            variants={itemVariants}
+            className="text-xs text-text-tertiary leading-relaxed max-w-2xl mx-auto uppercase tracking-[0.4em] italic opacity-60"
+          >
+            // JUSTICEAI_CORE_SYSTEM_OS_V2.1 // ESTABLISHED_TO_BRIDGE_THE_GAP_BETWEEN_COMPLEX_PROCEDURAL_JARGON_AND_CITIZEN_SECURITY.
           </motion.p>
         </motion.div>
 
         {/* Feature Grid */}
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="grid md:grid-cols-3 gap-8"
         >
           {features.map((feature, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={itemVariants}
-              className="p-8 rounded-3xl premium-blur border border-white/5 space-y-4 hover:border-gold/20 transition-all group"
+              className="p-8 rounded-sm bg-void border-2 border-white/5 space-y-6 hover:border-red/40 transition-all group shadow-hard relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-2xl bg-raised flex items-center justify-center border border-white/10 group-hover:border-gold/40 transition-colors">
-                <feature.icon className="w-6 h-6 text-gold" />
+              {/* Tactical Corner Accent */}
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-red/0 group-hover:border-red/40 transition-all" />
+              
+              <div className="w-14 h-14 rounded-sm bg-void flex items-center justify-center border-2 border-white/10 group-hover:border-red/40 transition-colors shadow-inner">
+                <feature.icon className="w-7 h-7 text-red" />
               </div>
-              <h3 className="text-xl font-display text-white">{feature.title}</h3>
-              <p className="text-sm text-text-secondary leading-relaxed font-body">
+              <h3 className="text-sm font-display font-bold text-white uppercase tracking-widest italic">{feature.title}</h3>
+              <p className="text-[10px] text-text-tertiary leading-loose uppercase tracking-widest italic opacity-60">
                 {feature.description}
               </p>
             </motion.div>
@@ -81,30 +95,39 @@ export default function AboutPage() {
         </motion.div>
 
         {/* Disclaimer Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-12 rounded-[40px] bg-raised border border-white/5 space-y-8"
+          className="p-12 rounded-sm bg-void border-2 border-red/15 space-y-10 shadow-hard relative"
         >
-          <div className="flex items-center gap-4 border-b border-white/5 pb-6">
-            <Shield className="w-6 h-6 text-gold" />
-            <h2 className="text-2xl font-display text-white">Full Legal Disclaimer</h2>
+           {/* Scanning Bar Animation */}
+           <div className="absolute top-0 left-0 w-full h-[2px] bg-red/20 overflow-hidden">
+            <motion.div 
+               animate={{ x: ['-100%', '100%'] }} 
+               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+               className="w-1/3 h-full bg-red shadow-[0_0_15px_rgba(225,29,72,0.8)]" 
+            />
           </div>
-          <div className="space-y-4 text-sm text-text-secondary leading-relaxed font-body">
-            <p>
-              JusticeAI is an experimental AI-powered legal co-pilot. It is designed for informational 
-              purposes only. **JusticeAI is not a lawyer and does not provide legal advice.**
+
+          <div className="flex items-center gap-6 border-b-2 border-white/5 pb-8">
+            <Shield className="w-8 h-8 text-red" />
+            <h2 className="text-3xl font-display font-bold text-white uppercase tracking-tighter italic">MANDATORY_DISCLOSURE</h2>
+          </div>
+          <div className="space-y-6 text-[10px] text-text-tertiary leading-loose uppercase tracking-[0.2em] italic">
+            <p className="opacity-80">
+              JUSTICEAI IS AN ANALYTICAL INFORMATION VECTOR POWERED BY ARTIFICIAL_INTELLIGENCE. IT IS DESIGNED FOR
+              INFORMATIONAL PURPOSES ONLY. <strong className="text-red font-extrabold underline decoration-dotted">JUSTICEAI IS NOT A LICENSED ADVOCATE AND DOES NOT PROVIDE BINDING LEGAL COUNSEL_MANDATES.</strong>
             </p>
-            <p>
-              While we strive to provide accurate legal information based on Indian statutes, 
-              laws and interpretations can change. The predictions and strategies provided are 
-              estimates and should not be considered as a guarantee of any legal outcome.
+            <p className="opacity-60">
+              WHILE WE STRIVE TO PROVIDE ACCURATE LEGAL ANALYTICS BASED ON INDIAN STATUTES, LAWS
+              AND INTERPRETATIONS ARE SUBJECT TO REGULATORY CYCLES. THE PREDICTIONS AND STRATEGIES PROVIDED ARE ESTIMATES
+              BY THE AI_CORE_LOGIC AND SHOULD NOT BE CONSIDERED AS A GUARANTEE OF ANY JURIDICAL OUTCOME.
             </p>
-            <p>
-              Always consult with a qualified advocate or legal professional before taking 
-              any formal legal steps, filing cases, or signing legal documents. Your use of 
-              JusticeAI acknowledges that you understand these limitations.
+            <p className="opacity-60 border-l-4 border-red/20 pl-8">
+              ALWAYS CONSULT WITH A QUALIFIED BUREAU_ADVOCATE OR LEGAL PROFESSIONAL BEFORE TAKING ANY
+              FORMAL LEGAL STEPS, FILING CASES, OR EXECUTING LEGAL INSTRUMENTS. YOUR USE OF THIS TERMINAL
+              ACKNOWLEDGES THAT YOU COMPREHEND THESE SYSTEM_LIMITATIONS.
             </p>
           </div>
         </motion.div>
@@ -112,3 +135,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

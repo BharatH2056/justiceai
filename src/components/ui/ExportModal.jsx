@@ -22,7 +22,7 @@ export default function ExportModal({ isOpen, onClose, summary }) {
             onClick={onClose}
             className="absolute inset-0 bg-void/80 backdrop-blur-sm"
           />
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -31,10 +31,10 @@ export default function ExportModal({ isOpen, onClose, summary }) {
           >
             <div className="p-6 border-b border-white/5 flex items-center justify-between bg-raised">
               <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-gold" />
+                <FileText className="w-5 h-5 text-purple" />
                 <h3 className="text-xl font-display text-white">Case Summary Report</h3>
               </div>
-              <button 
+              <button
                 onClick={onClose}
                 className="p-2 hover:bg-white/5 rounded-full text-text-tertiary transition-colors"
               >
@@ -43,33 +43,33 @@ export default function ExportModal({ isOpen, onClose, summary }) {
             </div>
 
             <div className="p-6 bg-void/50">
-              <div className="bg-raised/80 border border-white/5 p-6 rounded-2xl h-[400px] overflow-y-auto custom-scrollbar font-mono text-[13px] text-text-secondary leading-relaxed whitespace-pre-wrap selection:bg-gold/20">
+              <div className="bg-raised/80 border border-white/5 p-6 rounded-2xl h-[400px] overflow-y-auto custom-scrollbar font-mono text-[13px] text-text-secondary leading-relaxed whitespace-pre-wrap selection:bg-purple/20">
                 {summary}
               </div>
             </div>
 
             <div className="p-6 bg-raised border-t border-white/5 flex flex-col md:flex-row gap-3">
-              <button 
+              <button
                 onClick={handleCopy}
                 className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-medium transition-all active:scale-95 ${
-                  copied 
-                    ? 'bg-accent-success/20 text-accent-success border border-accent-success/30' 
-                    : 'bg-gold text-void hover:bg-gold-light'
+                  copied
+                    ? 'bg-accent-success/20 text-accent-success border border-accent-success/30'
+                    : 'bg-purple text-void hover:bg-purple-light'
                 }`}
               >
                 {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                 <span>{copied ? 'Copied to Clipboard' : 'Copy Text Summary'}</span>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => {
-                    const blob = new Blob([summary], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = `justiceai-case-summary-${new Date().getTime()}.txt`;
-                    link.click();
-                    URL.revokeObjectURL(url);
+                  const blob = new Blob([summary], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = `justiceai-case-summary-${new Date().getTime()}.txt`;
+                  link.click();
+                  URL.revokeObjectURL(url);
                 }}
                 className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 text-text-primary hover:bg-white/10 border border-white/10 transition-all font-medium active:scale-95"
               >

@@ -1,80 +1,119 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Scale, Plus, Info, Menu, Command, FileText, BookOpen, Calculator } from 'lucide-react';
-import MobileNav from './MobileNav';
+import { AnimatePresence } from 'framer-motion';
+import {
+  Scale,
+  Plus,
+  Menu,
+  Command,
+  LayoutDashboard,
+  FileText,
+  BookOpen,
+  Calculator,
+  UserCheck,
+  Clock,
+  HeartHandshake,
+  Milestone,
+  MessageSquare,
+  Settings2
+} from 'lucide-react';
+import MobileNav from './MobileNav.jsx';
+import CommandPalette from './CommandPalette.jsx';
+
+const navLinks = [
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/chat', label: 'AI Chat', icon: MessageSquare },
+  { to: '/documents', label: 'Documents', icon: FileText },
+  { to: '/rights', label: 'Rights', icon: BookOpen },
+  { to: '/estimator', label: 'Estimator', icon: Calculator },
+  { to: '/lawyers', label: 'LOCATE_ADVOCATE', icon: UserCheck },
+  { to: '/limitation', label: 'Deadlines', icon: Clock },
+  { to: '/legal-aid', label: 'Legal Aid', icon: HeartHandshake },
+  { to: '/tracker', label: 'Tracker', icon: Milestone },
+];
 
 export default function Header({ onNewCase }) {
   const location = useLocation();
-  const isChat = location.pathname === '/chat';
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 premium-blur border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50">
+        {/* Animated gradient border at top */}
+        <div className="h-[1px] w-full animated-border" />
+
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20 group-hover:border-gold/40 transition-colors">
-              <Scale className="w-5 h-5 text-gold" />
+          <Link to="/" className="flex items-center gap-3 group magnetic-hover">
+            <div className="w-10 h-10 rounded-xl bg-red/10 flex items-center justify-center border-2 border-red/20 group-hover:border-red group-hover:scale-105 transition-all duration-300 neon-glow-red">
+              <Scale className="w-5 h-5 text-red" />
             </div>
-            <span className="font-display text-2xl text-gold font-semibold tracking-tight">JusticeAI</span>
+            <span className="font-display text-2xl text-white font-bold tracking-tight group-hover:text-red transition-colors uppercase text-glow-sm">
+              Justice<span className="text-blue">AI</span>
+            </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6 ml-10">
-            <NavLink to="/documents" icon={FileText}>Documents</NavLink>
-            <NavLink to="/rights" icon={BookOpen}>Rights</NavLink>
-            <NavLink to="/estimator" icon={Calculator}>Estimator</NavLink>
-            <NavLink to="/samples">Samples</NavLink>
-            <NavLink to="/faq">FAQ</NavLink>
-            <NavLink to="/about">About</NavLink>
+          {/* Desktop Navigation */}
+          <nav className="hidden xl:flex items-center gap-1 bg-void/80 backdrop-blur-xl border-2 border-white/5 p-1 rounded shadow-hard">
+            {navLinks.map((link) => (
+              <NavLink key={link.to} to={link.to} icon={link.icon}>
+                {link.label}
+              </NavLink>
+            ))}
           </nav>
 
-          <div className="flex-1" />
-
-          <div className="flex items-center gap-4">
-            {/* Cmd+K Hint */}
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => {
-                document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
-              }}
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-gold/30 transition-colors cursor-pointer group"
+              onClick={() => setShowSearch(true)}
+              className="p-3 rounded bg-void border-2 border-white/10 text-text-tertiary hover:text-white hover:border-red/40 transition-all group shadow-sm active:translate-y-[1px]"
+              title="SEARCH_REGISTRY [CMD+K]"
             >
-              <Command className="w-3.5 h-3.5 text-text-tertiary group-hover:text-gold transition-colors" />
-              <span className="text-[10px] text-text-tertiary group-hover:text-text-secondary transition-colors font-medium">
-                Search
-              </span>
-              <kbd className="text-[9px] text-text-tertiary font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
-                ⌘K
-              </kbd>
+              <Command className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </button>
 
-            {/* Disclaimer Badge — desktop only */}
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
-              <Info className="w-3.5 h-3.5 text-gold-light" />
-              <span className="text-[11px] uppercase tracking-wider text-text-secondary font-medium">Information Only • No Legal Advice</span>
-            </div>
-
-            {isChat && (
-              <button 
-                onClick={onNewCase}
-                className="flex items-center gap-2 bg-gold hover:bg-gold-light text-void px-4 py-2 rounded-full font-medium transition-all active:scale-95 shadow-lg shadow-gold/20"
-              >
-                <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">New Case</span>
-              </button>
-            )}
-
-            {/* Mobile Menu Button */}
             <button
-              onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-raised border border-white/10 hover:border-gold/30 transition-colors"
+              onClick={onNewCase}
+              className="hidden md:flex items-center gap-3 px-6 py-3 bg-red text-white rounded border-2 border-red-light/20 font-extrabold text-[10px] uppercase tracking-[0.3em] hover:bg-red-dark transition-all active:translate-x-[1px] active:translate-y-[1px] shadow-hard-red font-display italic"
             >
-              <Menu className="w-5 h-5 text-text-secondary" />
+              <Plus className="w-4 h-4" />
+              <span>NEW_CASE_INIT</span>
+            </button>
+
+            <Link
+              to="/settings"
+              className="p-3 rounded bg-void border-2 border-white/10 text-text-tertiary hover:text-white hover:border-red/40 transition-all group shadow-sm active:translate-y-[1px]"
+              title="MODEL_SETTINGS"
+            >
+              <Settings2 className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+            </Link>
+
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-3 rounded bg-void border-2 border-white/10 text-text-tertiary hover:text-white hover:border-red/40 transition-all"
+            >
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
       </header>
 
-      <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      {/* Global Command Palette (Cmd+K) */}
+      <AnimatePresence>
+        {showSearch && <CommandPalette onClose={() => setShowSearch(false)} />}
+      </AnimatePresence>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <MobileNav
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+            links={navLinks}
+            activePath={location.pathname}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -82,12 +121,14 @@ export default function Header({ onNewCase }) {
 function NavLink({ to, children, icon: Icon }) {
   const location = useLocation();
   const isActive = location.pathname === to;
-  
+
   return (
     <Link
       to={to}
-      className={`flex items-center gap-1.5 text-sm font-semibold uppercase tracking-widest transition-colors ${
-        isActive ? 'text-gold' : 'text-text-tertiary hover:text-gold'
+      className={`relative flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.2em] transition-all px-4 py-2 rounded border-2 italic ${
+        isActive
+          ? 'text-white bg-red border-red-light/40 shadow-hard-red'
+          : 'text-text-tertiary border-transparent hover:text-white hover:border-white/10'
       }`}
     >
       {Icon && <Icon className="w-3.5 h-3.5" />}

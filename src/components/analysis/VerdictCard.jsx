@@ -8,26 +8,32 @@ export function VerdictCard({ verdict, confidence }) {
       label: 'favorable',
       icon: Trophy,
       color: 'text-accent-success',
-      bg: 'bg-accent-success/10',
-      border: 'border-accent-success/20',
-      description: 'The facts of your case align strongly with established Indian legal precedents.'
+      bg: 'bg-void',
+      border: 'border-accent-success/40',
+      shadow: 'shadow-[8px_8px_0px_0px_rgba(34,197,94,0.1)]',
+      description:
+        'The facts of your case align strongly with established Indian legal precedents and current BNS statutes.',
     },
     loss: {
       label: 'unfavorable',
       icon: AlertTriangle,
-      color: 'text-accent-error',
-      bg: 'bg-accent-error/10',
-      border: 'border-accent-error/20',
-      description: 'Based on the current information, there are significant legal hurdles to overcome.'
+      color: 'text-red',
+      bg: 'bg-void',
+      border: 'border-red/40',
+      shadow: 'shadow-[8px_8px_0px_0px_rgba(225,29,72,0.1)]',
+      description:
+        'Based on current parameters, there are significant procedural hurdles to overcome. Strategic pivot required.',
     },
     partial: {
       label: 'partial',
       icon: Scale,
-      color: 'text-accent-warning',
-      bg: 'bg-accent-warning/10',
-      border: 'border-accent-warning/20',
-      description: 'Your case has merit, but the outcome may depend heavily on specific document evidence.'
-    }
+      color: 'text-blue',
+      bg: 'bg-void',
+      border: 'border-blue/40',
+      shadow: 'shadow-[8px_8px_0px_0px_rgba(37,99,235,0.1)]',
+      description:
+        'Case has merit, but execution stability depends heavily on specific document evidence and jurisdictional oversight.',
+    },
   };
 
   const config = variants[verdict] || variants.partial;
@@ -35,35 +41,48 @@ export function VerdictCard({ verdict, confidence }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`p-6 rounded-2xl border ${config.bg} ${config.border} space-y-4 shadow-lg active:scale-[0.99] transition-transform cursor-default`}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className={`p-8 rounded-xl border-2 ${config.bg} ${config.border} space-y-6 ${config.shadow} active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-default relative overflow-hidden`}
     >
-      <div className="flex items-center justify-between">
-        <div className={`p-2.5 rounded-xl bg-void/50 border ${config.border} shadow-inner`}>
-          <Icon className={`w-6 h-6 ${config.color}`} />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 blur-3xl rounded-full opacity-10" />
+
+      <div className="flex items-center justify-between border-b-2 border-white/5 pb-6">
+        <div
+          className={`p-4 rounded bg-void border-2 ${config.border} shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]`}
+        >
+          <Icon className={`w-8 h-8 ${config.color}`} />
         </div>
         <div className="text-right">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-text-tertiary font-bold">Predicted Outcome</p>
-          <h3 className={`text-2xl font-display font-semibold ${config.color} capitalize`}>{config.label}</h3>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-text-tertiary font-extrabold">
+            SUCCESS_PROBABILITY
+          </p>
+          <h3
+            className={`text-3xl font-display font-bold ${config.color} uppercase tracking-tighter italic mt-1`}
+          >
+            {config.label}
+          </h3>
         </div>
       </div>
-      
-      <p className="text-sm font-body text-text-secondary leading-relaxed">
+
+      <p className="text-xs font-body text-text-secondary leading-relaxed border-l-2 border-white/10 pl-6 italic">
         {config.description}
       </p>
 
-      <div className="space-y-2 pt-2">
+      <div className="space-y-3 pt-4">
         <div className="flex justify-between items-end">
-          <span className="text-[10px] uppercase font-bold tracking-widest text-text-tertiary">Confidence Score</span>
-          <span className="text-sm font-display text-gold-light font-bold">{confidence}%</span>
+          <span className="text-[10px] uppercase font-extrabold tracking-[0.3em] text-text-tertiary">
+            TACTICAL_GROUNDING
+          </span>
+          <span className={`text-sm font-display font-bold ${config.color}`}>{confidence}%</span>
         </div>
-        <div className="h-2 bg-void/50 rounded-full overflow-hidden border border-white/5">
-          <motion.div 
+        <div className="h-3 bg-void rounded overflow-hidden border-2 border-white/10 shadow-inner">
+          <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${confidence}%` }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="h-full gold-gradient shadow-[0_0_10px_rgba(212,175,55,0.4)]" 
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            className={`h-full ${verdict === 'win' ? 'bg-accent-success' : verdict === 'loss' ? 'bg-red' : 'bg-blue'} shadow-[0_0_15px_rgba(0,0,0,0.5)]`}
           />
         </div>
       </div>

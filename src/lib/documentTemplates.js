@@ -2,21 +2,50 @@ export const DOCUMENT_TEMPLATES = [
   {
     id: 'legal-notice',
     title: 'Legal Notice',
-    description: 'A formal notice sent before filing a civil suit. Required under Section 80 CPC for government bodies.',
+    description:
+      'A formal notice sent before filing a civil suit. Required under Section 80 CPC for government bodies.',
     icon: 'FileWarning',
-    color: 'gold',
+    color: 'purple',
     fields: [
       { id: 'senderName', label: 'Your Full Name', type: 'text', required: true },
       { id: 'senderAddress', label: 'Your Address', type: 'textarea', required: true },
       { id: 'recipientName', label: 'Recipient Name / Organization', type: 'text', required: true },
       { id: 'recipientAddress', label: 'Recipient Address', type: 'textarea', required: true },
-      { id: 'subject', label: 'Subject of Notice', type: 'text', required: true, placeholder: 'e.g., Demand for refund of defective product' },
-      { id: 'facts', label: 'Statement of Facts', type: 'textarea', required: true, placeholder: 'Describe the situation in detail with dates...' },
-      { id: 'demand', label: 'Your Demand / Relief Sought', type: 'textarea', required: true, placeholder: 'e.g., Full refund of ₹85,000 within 15 days...' },
-      { id: 'deadline', label: 'Response Deadline (days)', type: 'number', required: true, placeholder: '15' },
+      {
+        id: 'subject',
+        label: 'Subject of Notice',
+        type: 'text',
+        required: true,
+        placeholder: 'e.g., Demand for refund of defective product',
+      },
+      {
+        id: 'facts',
+        label: 'Statement of Facts',
+        type: 'textarea',
+        required: true,
+        placeholder: 'Describe the situation in detail with dates...',
+      },
+      {
+        id: 'demand',
+        label: 'Your Demand / Relief Sought',
+        type: 'textarea',
+        required: true,
+        placeholder: 'e.g., Full refund of ₹85,000 within 15 days...',
+      },
+      {
+        id: 'deadline',
+        label: 'Response Deadline (days)',
+        type: 'number',
+        required: true,
+        placeholder: '15',
+      },
     ],
     generate: (data) => {
-      const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+      const today = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
       return `LEGAL NOTICE
 ═══════════════════════════════════════════════
 
@@ -58,28 +87,65 @@ DISCLAIMER: This document was generated using JusticeAI
 for informational purposes only. Please consult a
 qualified advocate before sending any legal communication.
 ═══════════════════════════════════════════════`;
-    }
+    },
   },
   {
     id: 'consumer-complaint',
     title: 'Consumer Complaint',
-    description: 'File a complaint with the Consumer Disputes Redressal Commission under the Consumer Protection Act, 2019.',
+    description:
+      'File a complaint with the Consumer Disputes Redressal Commission under the Consumer Protection Act, 2019.',
     icon: 'ShoppingBag',
     color: 'accent-success',
     fields: [
       { id: 'complainantName', label: 'Complainant (Your) Name', type: 'text', required: true },
       { id: 'complainantAddress', label: 'Complainant Address', type: 'textarea', required: true },
-      { id: 'oppositeParty', label: 'Opposite Party (Seller/Company)', type: 'text', required: true },
-      { id: 'oppositePartyAddress', label: 'Opposite Party Address', type: 'textarea', required: true },
-      { id: 'productService', label: 'Product / Service', type: 'text', required: true, placeholder: 'e.g., Samsung Galaxy S24 Ultra' },
+      {
+        id: 'oppositeParty',
+        label: 'Opposite Party (Seller/Company)',
+        type: 'text',
+        required: true,
+      },
+      {
+        id: 'oppositePartyAddress',
+        label: 'Opposite Party Address',
+        type: 'textarea',
+        required: true,
+      },
+      {
+        id: 'productService',
+        label: 'Product / Service',
+        type: 'text',
+        required: true,
+        placeholder: 'e.g., Samsung Galaxy S24 Ultra',
+      },
       { id: 'purchaseDate', label: 'Date of Purchase', type: 'date', required: true },
       { id: 'amount', label: 'Amount Paid (₹)', type: 'number', required: true },
-      { id: 'deficiency', label: 'Nature of Deficiency / Defect', type: 'textarea', required: true },
-      { id: 'relief', label: 'Relief Sought', type: 'textarea', required: true, placeholder: 'e.g., Full refund + compensation for mental agony...' },
+      {
+        id: 'deficiency',
+        label: 'Nature of Deficiency / Defect',
+        type: 'textarea',
+        required: true,
+      },
+      {
+        id: 'relief',
+        label: 'Relief Sought',
+        type: 'textarea',
+        required: true,
+        placeholder: 'e.g., Full refund + compensation for mental agony...',
+      },
     ],
     generate: (data) => {
-      const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
-      const forumLevel = (data.amount || 0) <= 5000000 ? 'District' : (data.amount || 0) <= 20000000 ? 'State' : 'National';
+      const today = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+      const forumLevel =
+        (data.amount || 0) <= 5000000
+          ? 'District'
+          : (data.amount || 0) <= 20000000
+            ? 'State'
+            : 'National';
       return `BEFORE THE ${forumLevel.toUpperCase()} CONSUMER DISPUTES
 REDRESSAL COMMISSION
 ═══════════════════════════════════════════════
@@ -148,26 +214,61 @@ DISCLAIMER: Generated by JusticeAI for informational
 purposes. Please have a qualified advocate review before
 filing.
 ═══════════════════════════════════════════════`;
-    }
+    },
   },
   {
     id: 'rti-application',
     title: 'RTI Application',
-    description: 'Right to Information request under the RTI Act, 2005. Every citizen\'s right to access government information.',
+    description:
+      "Right to Information request under the RTI Act, 2005. Every citizen's right to access government information.",
     icon: 'FileSearch',
     color: 'accent-info',
     fields: [
       { id: 'applicantName', label: 'Applicant Name', type: 'text', required: true },
       { id: 'applicantAddress', label: 'Applicant Address', type: 'textarea', required: true },
-      { id: 'pioName', label: 'Public Information Officer (if known)', type: 'text', required: false, placeholder: 'Name of PIO or Department' },
-      { id: 'authority', label: 'Public Authority / Department', type: 'text', required: true, placeholder: 'e.g., Municipal Corporation, Delhi' },
+      {
+        id: 'pioName',
+        label: 'Public Information Officer (if known)',
+        type: 'text',
+        required: false,
+        placeholder: 'Name of PIO or Department',
+      },
+      {
+        id: 'authority',
+        label: 'Public Authority / Department',
+        type: 'text',
+        required: true,
+        placeholder: 'e.g., Municipal Corporation, Delhi',
+      },
       { id: 'authorityAddress', label: 'Authority Address', type: 'textarea', required: true },
-      { id: 'information', label: 'Information Sought', type: 'textarea', required: true, placeholder: 'List each question/information point clearly (numbered)...' },
-      { id: 'period', label: 'Period/Year of Information', type: 'text', required: false, placeholder: 'e.g., January 2023 to December 2024' },
-      { id: 'bpl', label: 'Are you Below Poverty Line?', type: 'select', options: ['No', 'Yes'], required: true },
+      {
+        id: 'information',
+        label: 'Information Sought',
+        type: 'textarea',
+        required: true,
+        placeholder: 'List each question/information point clearly (numbered)...',
+      },
+      {
+        id: 'period',
+        label: 'Period/Year of Information',
+        type: 'text',
+        required: false,
+        placeholder: 'e.g., January 2023 to December 2024',
+      },
+      {
+        id: 'bpl',
+        label: 'Are you Below Poverty Line?',
+        type: 'select',
+        options: ['No', 'Yes'],
+        required: true,
+      },
     ],
     generate: (data) => {
-      const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+      const today = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
       return `APPLICATION UNDER THE RIGHT TO INFORMATION ACT, 2005
 ═══════════════════════════════════════════════
 
@@ -200,9 +301,11 @@ I request that the above information be provided to
 me in the form of photocopies / electronic format
 (CD/email) as applicable.
 
-${data.bpl === 'Yes' 
-  ? 'I belong to Below Poverty Line (BPL) category and am therefore exempt from payment of fee as per Section 7(5) of the RTI Act, 2005. BPL certificate is enclosed.' 
-  : 'I am enclosing an IPO / DD / Court Fee Stamp of ₹10 (Ten Rupees Only) as prescribed fee under Section 6 of the RTI Act, 2005.'}
+${
+  data.bpl === 'Yes'
+    ? 'I belong to Below Poverty Line (BPL) category and am therefore exempt from payment of fee as per Section 7(5) of the RTI Act, 2005. BPL certificate is enclosed.'
+    : 'I am enclosing an IPO / DD / Court Fee Stamp of ₹10 (Ten Rupees Only) as prescribed fee under Section 6 of the RTI Act, 2005.'
+}
 
 I request you to kindly provide the information within
 30 days as mandated under Section 7(1) of the Act.
@@ -224,32 +327,66 @@ First Appeal under Section 19(1) within 30 days.
 DISCLAIMER: Generated by JusticeAI for informational
 purposes only.
 ═══════════════════════════════════════════════`;
-    }
+    },
   },
   {
     id: 'fir-draft',
     title: 'FIR Draft Helper',
-    description: 'Prepare a structured First Information Report draft to present at the police station.',
+    description:
+      'Prepare a structured First Information Report draft to present at the police station.',
     icon: 'Shield',
     color: 'accent-error',
     fields: [
       { id: 'informantName', label: 'Informant (Your) Name', type: 'text', required: true },
       { id: 'informantAddress', label: 'Your Address', type: 'textarea', required: true },
       { id: 'informantPhone', label: 'Phone Number', type: 'text', required: true },
-      { id: 'policeStation', label: 'Police Station', type: 'text', required: true, placeholder: 'e.g., Koramangala PS, Bengaluru' },
+      {
+        id: 'policeStation',
+        label: 'Police Station',
+        type: 'text',
+        required: true,
+        placeholder: 'e.g., Koramangala PS, Bengaluru',
+      },
       { id: 'incidentDate', label: 'Date of Incident', type: 'date', required: true },
-      { id: 'incidentTime', label: 'Approximate Time', type: 'text', required: true, placeholder: 'e.g., Between 8 PM and 9 PM' },
+      {
+        id: 'incidentTime',
+        label: 'Approximate Time',
+        type: 'text',
+        required: true,
+        placeholder: 'e.g., Between 8 PM and 9 PM',
+      },
       { id: 'incidentPlace', label: 'Place of Occurrence', type: 'textarea', required: true },
-      { id: 'accusedDetails', label: 'Details of Accused (if known)', type: 'textarea', required: false, placeholder: 'Name, description, address if known...' },
-      { id: 'narrative', label: 'Detailed Narrative of Incident', type: 'textarea', required: true, placeholder: 'Describe exactly what happened in chronological order...' },
-      { id: 'stolenLost', label: 'Property Stolen / Damaged (if any)', type: 'textarea', required: false },
+      {
+        id: 'accusedDetails',
+        label: 'Details of Accused (if known)',
+        type: 'textarea',
+        required: false,
+        placeholder: 'Name, description, address if known...',
+      },
+      {
+        id: 'narrative',
+        label: 'Detailed Narrative of Incident',
+        type: 'textarea',
+        required: true,
+        placeholder: 'Describe exactly what happened in chronological order...',
+      },
+      {
+        id: 'stolenLost',
+        label: 'Property Stolen / Damaged (if any)',
+        type: 'textarea',
+        required: false,
+      },
     ],
     generate: (data) => {
-      const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+      const today = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
       return `FIRST INFORMATION REPORT — DRAFT
 ═══════════════════════════════════════════════
-(Under Section 154 of the Code of Criminal Procedure / 
-Section 173 of the Bharatiya Nagarik Suraksha Sanhita)
+(Under Section 173 of the Bharatiya Nagarik Suraksha Sanhita / 
+Section 154 of the Code of Criminal Procedure)
 
 Date of Report: ${today}
 
@@ -304,6 +441,6 @@ DISCLAIMER: This is a DRAFT to help you organize your
 complaint. The actual FIR will be recorded by the
 police officer. Generated by JusticeAI.
 ═══════════════════════════════════════════════`;
-    }
-  }
+    },
+  },
 ];

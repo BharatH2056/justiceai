@@ -1,14 +1,41 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { X, MessageSquare, FileText, BookOpen, Calculator, Play, HelpCircle, Info, Home, Scale, ShieldCheck, Command } from 'lucide-react';
+import {
+  X,
+  MessageSquare,
+  FileText,
+  BookOpen,
+  Calculator,
+  Play,
+  HelpCircle,
+  Info,
+  Home,
+  Scale,
+  ShieldCheck,
+  Command,
+  UserCheck,
+  Milestone,
+  Brain,
+  LayoutDashboard,
+  BookMarked,
+  Clock,
+  HeartHandshake,
+} from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Home', icon: Home },
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/chat', label: 'Legal Chat', icon: MessageSquare },
   { path: '/documents', label: 'Documents', icon: FileText },
   { path: '/rights', label: 'Know Your Rights', icon: BookOpen },
   { path: '/estimator', label: 'Cost Estimator', icon: Calculator },
+  { path: '/lawyers', label: 'LOCATE_ADVOCATE', icon: UserCheck },
+  { path: '/tracker', label: 'Case Tracker', icon: Milestone },
+  { path: '/quiz', label: 'Legal Quiz', icon: Brain },
+  { path: '/glossary', label: 'Legal Glossary', icon: BookMarked },
+  { path: '/limitation', label: 'Deadline Calculator', icon: Clock },
+  { path: '/legal-aid', label: 'Legal Aid Check', icon: HeartHandshake },
   { path: '/samples', label: 'Sample Cases', icon: Play },
   { path: '/faq', label: 'FAQ', icon: HelpCircle },
   { path: '/about', label: 'About', icon: Info },
@@ -41,10 +68,10 @@ export default function MobileNav({ isOpen, onClose }) {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-white/5">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
-                  <Scale className="w-4 h-4 text-gold" />
+                <div className="w-8 h-8 rounded-full bg-purple/10 flex items-center justify-center border border-purple/20">
+                  <Scale className="w-4 h-4 text-purple" />
                 </div>
-                <span className="font-display text-lg text-gold font-semibold">JusticeAI</span>
+                <span className="font-display text-lg text-purple font-semibold">JusticeAI</span>
               </div>
               <button
                 onClick={onClose}
@@ -55,7 +82,7 @@ export default function MobileNav({ isOpen, onClose }) {
             </div>
 
             {/* Nav Links */}
-            <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
               {NAV_ITEMS.map((item, i) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -64,22 +91,20 @@ export default function MobileNav({ isOpen, onClose }) {
                     key={item.path}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
+                    transition={{ delay: i * 0.04 }}
                   >
                     <Link
                       to={item.path}
                       onClick={onClose}
                       className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                         isActive
-                          ? 'bg-gold/10 text-gold border border-gold/20'
+                          ? 'bg-purple/10 text-purple border border-purple/20'
                           : 'text-text-secondary hover:bg-white/5 hover:text-white border border-transparent'
                       }`}
                     >
                       <Icon className="w-4 h-4" />
                       <span>{item.label}</span>
-                      {isActive && (
-                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold" />
-                      )}
+                      {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-purple" />}
                     </Link>
                   </motion.div>
                 );
@@ -90,15 +115,15 @@ export default function MobileNav({ isOpen, onClose }) {
             <div className="p-4 border-t border-white/5 space-y-3">
               {/* Keyboard Shortcut Hint */}
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
-                <Command className="w-3.5 h-3.5 text-gold-light" />
+                <Command className="w-3.5 h-3.5 text-purple-light" />
                 <span className="text-[10px] text-text-tertiary font-medium uppercase tracking-wider">
                   Cmd+K for quick search
                 </span>
               </div>
-              
+
               {/* Disclaimer */}
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-raised">
-                <ShieldCheck className="w-3.5 h-3.5 text-gold-light flex-shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-purple-light flex-shrink-0" />
                 <span className="text-[10px] text-text-tertiary font-medium">
                   Information Only • No Legal Advice
                 </span>
